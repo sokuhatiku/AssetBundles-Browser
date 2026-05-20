@@ -10,7 +10,9 @@ using System.Linq;
 using System.Reflection;
 using Assets.AssetBundles_Browser.Editor.Tests.Util;
 using Assets.Editor.Tests.Util;
+#if !UNITY_2017_2_OR_NEWER
 using Boo.Lang.Runtime;
+#endif
 using AssetBundleBrowser.AssetBundleModel;
 using UnityEngine.SceneManagement;
 
@@ -757,7 +759,11 @@ namespace AssetBundleBrowserTests
                 GameObject p = GameObject.Find(parentNames.ElementAt(i));
                 p.GetComponent<Renderer>().material = mat;
 
+#if UNITY_2018_3_OR_NEWER
+                PrefabUtility.ApplyPrefabInstance(p, InteractionMode.AutomatedAction);
+#else
                 PrefabUtility.ReplacePrefab(p, AssetDatabase.LoadMainAssetAtPath(paths.ElementAt(i)));
+#endif
             }
         }
 
